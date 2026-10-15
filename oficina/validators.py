@@ -71,6 +71,18 @@ def validar_placa(valor):
         )
 
 
+def normalizar_documento(valor):
+    return normalizar_cnpj(valor)  # CPF normalizado é subconjunto (só dígitos)
+
+
+def validar_documento(valor):
+    """CPF (11 dígitos) ou CNPJ (14 caracteres, numérico ou alfanumérico)."""
+    if len(normalizar_documento(valor)) == 11:
+        validar_cpf(valor)
+    else:
+        validar_cnpj(valor)
+
+
 # Fixo: DDD + 8 dígitos. Celular: DDD + 9 + 8 dígitos. DDD não começa com 0.
 PADRAO_TELEFONE = re.compile(r"[1-9][0-9](9?[0-9]{8})")
 
