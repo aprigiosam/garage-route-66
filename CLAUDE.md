@@ -78,4 +78,4 @@ O agente principal coordena: distribui as tarefas, consolida os pareceres e leva
 - Tudo em português (código pode ter identificadores em inglês).
 - Decisões viram ADR em `docs/decisoes/NNNN-titulo.md`: contexto, opções, decisão e consequências.
 - Pareceres são objetivos: recomendação primeiro, justificativa curta e riscos.
-- Toda mudança é documentada (README/changelog). O usuário é especialista em infra: sem explicações básicas.
+- **Toda mudança atualiza a documentação no mesmo commit:** `README.md` (visão geral e como rodar), `docs/dominio.md` (regras de negócio), `docs/operacao.md` (runbook e variáveis) e `CHANGELOG.md`. O usuário é especialista em infra: sem explicações básicas.
