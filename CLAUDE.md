@@ -63,16 +63,12 @@ Repo antigo (`~/Projetos/GarageRoute66`):
 
 O agente principal coordena: distribui as tarefas, consolida os pareceres e leva as decisões ao usuário.
 
-## Modo aprendizado (obrigatório)
+## Prioridade e forma de trabalho
 
-O Wesley quer **aprender durante todo o processo**. Ele é forte em infra/AWS/banco e está aprendendo
-desenvolvimento (Python/Django). Por isso:
-- Trabalhe em **passos pequenos**. Antes de cada passo, diga o que vai fazer e por quê, em 2 ou 3 linhas.
-- **Infra, banco e operação** (Docker, Tailscale, backup, Terraform): ele executa os comandos; você orienta e revisa.
-- **Código**: escreva em incrementos pequenos e explique os conceitos novos de Django na primeira vez que aparecerem.
-  Quando fizer sentido, deixe-o escrever a próxima parte parecida.
-- Registre o que foi aprendido em `docs/aprendizado.md`: conceito, onde apareceu no projeto e link da documentação oficial.
-- Ensinar não é ser prolixo: nada de explicar o básico de infra, que ele domina.
+- **Produção o quanto antes.** Foco no caminho crítico da V1; o resto vira backlog.
+- **Claude implementa.** O Wesley aprende acompanhando: a cada passo, 1 ou 2 linhas sobre o que foi feito e por quê. Nada de exercícios nem explicações longas.
+- **Teste unitário para tudo o que for implementado.** Não há entrega sem teste passando. A suíte precisa rodar rápido e sem rede, porque vai virar a etapa de CI.
+- Conceitos novos relevantes vão para `docs/aprendizado.md`, em uma linha.
 
 ## Convenções
 
