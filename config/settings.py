@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'oficina',
+    'balcao',
 ]
 
 MIDDLEWARE = [
@@ -127,6 +128,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'balcao:quadro'
+LOGOUT_REDIRECT_URL = 'login'
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'  # destino do collectstatic (no build da imagem)

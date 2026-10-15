@@ -1,0 +1,35 @@
+{% load static %}<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}Garage Route 66{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'balcao/vendor/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'balcao/balcao.css' %}">
+  <script src="{% static 'balcao/vendor/htmx.min.js' %}" defer></script>
+</head>
+<body class="bg-body-tertiary">
+{% if user.is_authenticated %}
+<nav class="navbar navbar-expand bg-dark mb-3" data-bs-theme="dark">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="{% url 'balcao:quadro' %}">GARAGE ROUTE 66</a>
+    <div class="navbar-nav me-auto">
+      <a class="nav-link" href="{% url 'balcao:quadro' %}">Quadro</a>
+      {% if user.is_staff %}<a class="nav-link" href="{% url 'admin:index' %}">Cadastros</a>{% endif %}
+    </div>
+    <a class="btn btn-warning fw-semibold me-3" href="{% url 'balcao:os_nova' %}">+ Nova OS</a>
+    <form method="post" action="{% url 'logout' %}">{% csrf_token %}
+      <button class="btn btn-outline-light btn-sm">Sair</button>
+    </form>
+  </div>
+</nav>
+{% endif %}
+<main class="container-fluid pb-4">
+  {% for m in messages %}
+  <div class="alert alert-{% if m.tags == 'error' %}danger{% else %}{{ m.tags }}{% endif %} py-2">{{ m }}</div>
+  {% endfor %}
+  {% block conteudo %}{% endblock %}
+</main>
+<script src="{% static 'balcao/vendor/bootstrap.bundle.min.js' %}" defer></script>
+</body>
+</html>

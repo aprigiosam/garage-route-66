@@ -1,0 +1,10 @@
+{% load balcao %}
+{% if veiculo %}
+<div class="alert alert-success py-2 mb-0">
+  <strong>Veículo cadastrado:</strong> {{ veiculo.marca }} {{ veiculo.modelo }}{% if veiculo.ano %} {{ veiculo.ano }}{% endif %}
+  · Cliente <strong>{{ veiculo.cliente.nome }}</strong>{% if veiculo.cliente.telefone %} · {{ veiculo.cliente.telefone|telefone }}{% endif %}.
+  Os dados de cliente e veículo abaixo serão ignorados.
+</div>
+{% elif placa|length == 7 %}
+<div class="alert alert-info py-2 mb-0">Placa nova: preencha os dados do cliente e do veículo.</div>
+{% endif %}

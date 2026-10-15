@@ -16,6 +16,7 @@ RUN --mount=type=cache,target=/root/.cache/uv uv sync --locked --no-dev --no-ins
 COPY manage.py ./
 COPY config ./config
 COPY oficina ./oficina
+COPY balcao ./balcao
 RUN DJANGO_SECRET_KEY=somente-build DJANGO_STATIC_MANIFEST=1 \
     /app/.venv/bin/python manage.py collectstatic --noinput
 

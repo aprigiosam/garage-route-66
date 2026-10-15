@@ -23,7 +23,9 @@ flowchart LR
 
 | Camada | Escolha | Motivo (detalhes no [ADR 0001](docs/decisoes/0001-caminho-stack-e-infra-da-v1.md)) |
 |---|---|---|
-| Linguagem/framework | Python 3.12 + Django 5.2 LTS | Suporte até 2028; o admin pronto é a interface da V1 |
+| Linguagem/framework | Python 3.12 + Django 5.2 LTS | Suporte até 2028 |
+| Arquitetura | Monolito modular: `oficina` (domínio) + `balcao` (interface) | 1 container, regras num lugar só ([ADR 0002](docs/decisoes/0002-monolito-modular-e-interface-htmx.md)) |
+| Interface | Django templates + HTMX + Bootstrap, sem Node | Sem build de front; arquivos vendorizados |
 | Banco | SQLite (arquivo único) | 1 usuária; backup é copiar um arquivo; zero operação |
 | Servidor | gunicorn + whitenoise num container | Sem nginx: um processo a menos para operar |
 | Dependências | uv (`pyproject.toml` + `uv.lock`) | Reprodutível, com hashes |
@@ -33,10 +35,12 @@ flowchart LR
 
 ```
 config/              Configuração do Django (settings via variáveis de ambiente, rotas)
-oficina/             App de domínio
+balcao/              Interface da recepcionista: quadro de OS, nova OS, detalhe (templates + HTMX + Bootstrap)
+  static/balcao/vendor/  Bootstrap 5.3.3 e HTMX 2.0.4 vendorizados (hashes em SHA256SUMS)
+oficina/             App de domínio (não depende de interface)
   models.py          Cliente, Veículo, Fornecedor, OS, Item, Aprovação, Histórico (regras de negócio)
   validators.py      CPF, CNPJ (inclusive alfanumérico), placa e telefone
-  admin.py           Interface da recepcionista (Django admin customizado)
+  admin.py           Backoffice (Django admin): fornecedores e correções
   views.py           /saude/ (healthcheck)
   formatacao.py      Formatação em R$
   tests/             Testes unitários (rodam em ~1s, sem rede)
@@ -61,13 +65,13 @@ cp .env.example .env                       # e preencha DJANGO_SECRET_KEY (coman
 uv sync                                    # cria o .venv a partir do uv.lock
 uv run --env-file .env python manage.py migrate
 uv run --env-file .env python manage.py createsuperuser
-uv run --env-file .env python manage.py runserver   # http://127.0.0.1:8000/admin/
+uv run --env-file .env python manage.py runserver   # http://127.0.0.1:8000/
 ```
 
 **Testes**, obrigatórios para qualquer mudança:
 
 ```bash
-uv run --env-file .env python manage.py test oficina
+uv run --env-file .env python manage.py test
 ```
 
 **Mudou um model?** Rode `makemigrations`, revise o arquivo gerado em `oficina/migrations/` e commite junto com o código.

@@ -21,9 +21,10 @@ DUAS_CASAS = Decimal("0.01")
 class Cliente(models.Model):
     nome = models.CharField(max_length=120)
     documento = models.CharField(
-        "CPF/CNPJ", max_length=14, blank=True, validators=[v.validar_documento]
+        "CPF/CNPJ", max_length=20, blank=True, validators=[v.validar_documento]
     )
-    telefone = models.CharField(max_length=11, blank=True, validators=[v.validar_telefone])
+    # max_length com folga para a digitação com máscara; no banco o valor fica sempre normalizado.
+    telefone = models.CharField(max_length=20, blank=True, validators=[v.validar_telefone])
     observacao = models.TextField("observação", blank=True)
     criado_em = models.DateTimeField(auto_now_add=True)
 
@@ -39,17 +40,21 @@ class Cliente(models.Model):
     def __str__(self):
         return self.nome
 
-    def clean(self):
+    def normalizar(self):
         self.documento = v.normalizar_documento(self.documento)
         self.telefone = v.normalizar_telefone(self.telefone)
 
+    def clean_fields(self, exclude=None):
+        self.normalizar()  # antes das validações de campo (tamanho, formato)
+        super().clean_fields(exclude=exclude)
+
     def save(self, *args, **kwargs):
-        self.clean()
+        self.normalizar()
         super().save(*args, **kwargs)
 
 
 class Veiculo(models.Model):
-    placa = models.CharField(max_length=7, unique=True, validators=[v.validar_placa])
+    placa = models.CharField(max_length=8, unique=True, validators=[v.validar_placa])  # folga p/ "ABC-1234"
     marca = models.CharField(max_length=40, blank=True)
     modelo = models.CharField(max_length=60, blank=True)
     ano = models.PositiveSmallIntegerField(null=True, blank=True)
@@ -68,17 +73,26 @@ class Veiculo(models.Model):
     def __str__(self):
         return " ".join(filter(None, [self.placa, self.marca, self.modelo]))
 
-    def clean(self):
+    def clean_fields(self, exclude=None):
         self.placa = v.normalizar_placa(self.placa)
+        super().clean_fields(exclude=exclude)
 
     def save(self, *args, **kwargs):
-        self.clean()
+        self.placa = v.normalizar_placa(self.placa)
         super().save(*args, **kwargs)
 
 
 class Fornecedor(models.Model):
     nome = models.CharField(max_length=80, unique=True)
-    telefone = models.CharField(max_length=11, blank=True, validators=[v.validar_telefone])
+    telefone = models.CharField(max_length=20, blank=True, validators=[v.validar_telefone])
+
+    def clean_fields(self, exclude=None):
+        self.telefone = v.normalizar_telefone(self.telefone)
+        super().clean_fields(exclude=exclude)
+
+    def save(self, *args, **kwargs):
+        self.telefone = v.normalizar_telefone(self.telefone)
+        super().save(*args, **kwargs)
 
     class Meta:
         ordering = ["nome"]

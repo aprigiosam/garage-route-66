@@ -7,7 +7,7 @@ no servidor (fase 0: notebook do Wesley).
 
 | Item | Situação |
 |---|---|
-| Aplicação em container | ✅ no ar em `127.0.0.1:8000` (só o servidor acessa) |
+| Aplicação em container | ✅ no ar em `127.0.0.1:8000` (só o servidor acessa). Balcão em `/`, backoffice em `/admin/` |
 | Backup automático cifrado + restore testado | ⛔ **pendente: não cadastrar dados reais antes disso** |
 | Acesso da oficina via Tailscale (HTTPS) | ⛔ pendente |
 | OS impressa/PDF | ⛔ pendente |
@@ -41,7 +41,7 @@ Rode-os num terminal normal, não pelo prompt `!` do Claude Code.
 
 **Atualizar com segurança:**
 1. `git pull`
-2. Testes: `uv run --env-file .env python manage.py test oficina`
+2. Testes: `uv run --env-file .env python manage.py test`
 3. *(quando existir)* backup manual
 4. `docker compose up -d --build`
 5. Conferir o healthcheck: `docker compose ps` deve mostrar `healthy`.

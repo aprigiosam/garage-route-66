@@ -1,0 +1,5 @@
+<div class="mb-2 {{ classe }}">
+  <label class="form-label small fw-semibold mb-1" for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+  {{ campo }}
+  {% for erro in campo.errors %}<div class="invalid-feedback d-block">{{ erro }}</div>{% endfor %}
+</div>

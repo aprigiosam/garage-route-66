@@ -1,0 +1,17 @@
+{% extends "balcao/base.html" %}
+{% block titulo %}Entrar · Garage Route 66{% endblock %}
+{% block conteudo %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh">
+  <form method="post" class="card shadow-sm p-4" style="width: 22rem">{% csrf_token %}
+    <h1 class="h4 fw-bold text-center mb-1">GARAGE ROUTE 66</h1>
+    <p class="text-center text-muted small mb-4">Ordens de serviço</p>
+    {% if form.errors %}<div class="alert alert-danger py-2 small">Usuário ou senha incorretos.</div>{% endif %}
+    <label class="form-label small fw-semibold" for="id_username">Usuário</label>
+    <input class="form-control mb-3" id="id_username" name="username" autocomplete="username" required autofocus>
+    <label class="form-label small fw-semibold" for="id_password">Senha</label>
+    <input class="form-control mb-4" id="id_password" name="password" type="password" autocomplete="current-password" required>
+    <input type="hidden" name="next" value="{{ next }}">
+    <button class="btn btn-dark w-100">Entrar</button>
+  </form>
+</div>
+{% endblock %}

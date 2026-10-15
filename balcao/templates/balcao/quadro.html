@@ -1,0 +1,7 @@
+{% extends "balcao/base.html" %}
+{% block conteudo %}
+<input type="search" name="q" class="form-control form-control-lg mb-3" autocomplete="off" autofocus
+       placeholder="Buscar por placa, nome, telefone ou nº da OS"
+       hx-get="{% url 'balcao:quadro' %}" hx-trigger="input changed delay:300ms, search" hx-target="#conteudo">
+<div id="conteudo">{% include "balcao/_quadro_conteudo.html" %}</div>
+{% endblock %}

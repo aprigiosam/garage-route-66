@@ -31,6 +31,15 @@ class ClienteTests(TestCase):
         c = Cliente.objects.create(nome="A", documento="529.982.247-25", telefone="(11) 94379-6788")
         self.assertEqual((c.documento, c.telefone), ("52998224725", "11943796788"))
 
+    def test_full_clean_aceita_entrada_com_mascara(self):
+        # Regressão: o tamanho máximo era checado antes de normalizar a máscara.
+        c = Cliente(nome="A", documento="12.ABC.345/01DE-35", telefone="(11) 94379-6788")
+        c.full_clean()
+        self.assertEqual((c.documento, c.telefone), ("12ABC34501DE35", "11943796788"))
+        veiculo = Veiculo(placa="abc-1234", cliente=Cliente.objects.create(nome="B"))
+        veiculo.full_clean()
+        self.assertEqual(veiculo.placa, "ABC1234")
+
     def test_documento_invalido_e_rejeitado(self):
         with self.assertRaises(ValidationError):
             Cliente(nome="A", documento="111.111.111-11").full_clean()

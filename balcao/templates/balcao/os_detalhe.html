@@ -1,0 +1,152 @@
+{% extends "balcao/base.html" %}
+{% load balcao %}
+{% block titulo %}OS {{ os.numero }} · Garage Route 66{% endblock %}
+{% block conteudo %}
+<div class="d-flex flex-wrap align-items-center gap-3 mb-3">
+  <h1 class="h3 fw-bold mb-0">OS {{ os.numero }}</h1>
+  <span class="badge fs-6 text-bg-{{ os.status|cor_status }}">{{ os.get_status_display }}</span>
+  <span class="placa fs-5">{{ os.veiculo.placa }}</span>
+  <span class="text-muted">{{ os.veiculo.marca }} {{ os.veiculo.modelo }}{% if os.veiculo.ano %} {{ os.veiculo.ano }}{% endif %}</span>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-8">
+    <div class="card shadow-sm mb-3"><div class="card-body">
+      <div class="row small">
+        <div class="col-md-4"><div class="text-muted">Cliente</div><strong>{{ os.cliente.nome }}</strong></div>
+        <div class="col-md-3"><div class="text-muted">Telefone</div>{{ os.cliente.telefone|telefone|default:"—" }}</div>
+        <div class="col-md-2"><div class="text-muted">Km</div>{{ os.km_entrada|default:"—" }}</div>
+        <div class="col-md-3"><div class="text-muted">Aberta em</div>{{ os.aberta_em|date:"d/m/Y H:i" }}</div>
+      </div>
+      <hr>
+      <div class="text-muted small">Relato do cliente</div>
+      <p class="mb-2">{{ os.relato_cliente|linebreaksbr }}</p>
+      {% if os.diagnostico %}<div class="text-muted small">Diagnóstico</div><p class="mb-0">{{ os.diagnostico|linebreaksbr }}</p>{% endif %}
+    </div></div>
+
+    <div class="card shadow-sm">
+      <div class="card-header fw-semibold">Peças e serviços</div>
+      <div class="table-responsive">
+      <table class="table align-middle mb-0">
+        <thead class="small text-muted"><tr><th>Tipo</th><th>Descrição</th><th class="text-end">Qtd</th><th class="text-end">Unitário</th><th class="text-end">Total</th><th>Origem</th><th></th></tr></thead>
+        <tbody>
+        {% for item in itens %}
+          <tr class="{% if item.situacao != 'ativo' %}text-decoration-line-through text-muted{% endif %}">
+            <td><span class="badge text-bg-light border">{{ item.get_tipo_display }}</span></td>
+            <td>{{ item.descricao }}{% if item.situacao != 'ativo' %} <span class="badge text-bg-secondary">{{ item.get_situacao_display }}</span>{% endif %}</td>
+            <td class="text-end">{{ item.quantidade|floatformat:"-3" }}</td>
+            <td class="text-end">{{ item.valor_unitario|brl }}</td>
+            <td class="text-end fw-semibold">{{ item.valor_total|brl }}</td>
+            <td class="small">{% if item.origem %}{{ item.get_origem_display }}{% if item.fornecedor %} · {{ item.fornecedor }}{% endif %}{% endif %}</td>
+            <td class="text-end">
+              {% if item.situacao == 'ativo' %}
+              <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" type="button">⋯</button>
+                <div class="dropdown-menu dropdown-menu-end p-2" style="min-width: 16rem">
+                  <form method="post" action="{% url 'balcao:item_situacao' os.numero item.pk %}">{% csrf_token %}
+                    <input class="form-control form-control-sm mb-2" name="motivo" placeholder="Motivo (opcional)">
+                    {% if item.tipo == 'peca' %}<button class="btn btn-sm btn-outline-warning w-100 mb-1" name="situacao" value="devolvido">Devolvida ao fornecedor</button>{% endif %}
+                    <button class="btn btn-sm btn-outline-danger w-100" name="situacao" value="removido">Remover do orçamento</button>
+                  </form>
+                </div>
+              </div>
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="7" class="text-center text-muted py-3">Nenhum item ainda.</td></tr>
+        {% endfor %}
+        </tbody>
+        <tfoot class="table-light">
+          <tr><td colspan="4" class="text-end fw-semibold">Total</td><td class="text-end fw-bold">{{ total_geral|brl }}</td><td colspan="2"></td></tr>
+        </tfoot>
+      </table>
+      </div>
+      {% if item_form %}
+      <form method="post" action="{% url 'balcao:item_adicionar' os.numero %}" class="card-body border-top bg-body-tertiary" novalidate>{% csrf_token %}
+        <div class="small fw-semibold mb-2">Adicionar item</div>
+        {% for erro in item_form.non_field_errors %}<div class="alert alert-danger py-1 small">{{ erro }}</div>{% endfor %}
+        <div class="row g-2">
+          {% include "balcao/_campo.html" with campo=item_form.tipo classe="col-md-2" %}
+          {% include "balcao/_campo.html" with campo=item_form.descricao classe="col-md-6" %}
+          {% include "balcao/_campo.html" with campo=item_form.quantidade classe="col-md-2" %}
+          {% include "balcao/_campo.html" with campo=item_form.valor_unitario classe="col-md-2" %}
+        </div>
+        <div class="row g-2 align-items-end">
+          {% include "balcao/_campo.html" with campo=item_form.origem classe="col-md-4" %}
+          {% include "balcao/_campo.html" with campo=item_form.fornecedor classe="col-md-5" %}
+          <div class="col-md-3 mb-2"><button class="btn btn-dark w-100">Adicionar item</button></div>
+        </div>
+        <div class="form-text">Peça trazida pelo cliente não é cobrada. Serviço não tem origem.</div>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card shadow-sm mb-3"><div class="card-body">
+      <div class="d-flex justify-content-between"><span class="text-muted">Peças</span><span>{{ total_pecas|brl }}</span></div>
+      <div class="d-flex justify-content-between"><span class="text-muted">Serviços</span><span>{{ total_servicos|brl }}</span></div>
+      <hr class="my-2">
+      <div class="d-flex justify-content-between fs-4 fw-bold"><span>Total</span><span>{{ total_geral|brl }}</span></div>
+      {% if os.forma_pagamento %}<div class="small text-muted text-end">Pago: {{ os.get_forma_pagamento_display }}</div>{% endif %}
+    </div></div>
+
+    {% if decisao_form or entrega_form or acoes %}
+    <div class="card shadow-sm mb-3 border-dark">
+      <div class="card-header fw-semibold">Próximo passo</div>
+      <div class="card-body">
+        {% if decisao_form %}
+        <form method="post" action="{% url 'balcao:os_decisao' os.numero %}" class="mb-3" novalidate>{% csrf_token %}
+          {% for erro in decisao_form.non_field_errors %}<div class="alert alert-danger py-1 small">{{ erro }}</div>{% endfor %}
+          {% include "balcao/_campo.html" with campo=decisao_form.decisao %}
+          {% include "balcao/_campo.html" with campo=decisao_form.canal %}
+          {% include "balcao/_campo.html" with campo=decisao_form.nome %}
+          <button class="btn btn-dark w-100">Registrar resposta do cliente</button>
+        </form>
+        {% endif %}
+        {% if entrega_form %}
+        <form method="post" action="{% url 'balcao:os_entregar' os.numero %}" class="mb-3" novalidate>{% csrf_token %}
+          {% for erro in entrega_form.non_field_errors %}<div class="alert alert-danger py-1 small">{{ erro }}</div>{% endfor %}
+          {% include "balcao/_campo.html" with campo=entrega_form.forma_pagamento %}
+          <button class="btn btn-success w-100">Entregar veículo</button>
+        </form>
+        {% endif %}
+        {% for destino in acoes %}
+        <form method="post" action="{% url 'balcao:os_status' os.numero %}" class="mb-2">{% csrf_token %}
+          <button class="btn w-100 {% if destino == 'cancelada' %}btn-outline-danger{% else %}btn-{{ destino|cor_status }}{% endif %}"
+                  name="destino" value="{{ destino }}"
+                  {% if destino == 'cancelada' %}onclick="return confirm('Cancelar a OS {{ os.numero }}?')"{% endif %}>
+            {% if destino == 'em_execucao' %}Iniciar serviço{% elif destino == 'pronta' %}Marcar como pronta{% elif destino == 'orcamento' %}Reabrir orçamento{% elif destino == 'cancelada' %}Cancelar OS{% else %}{{ destino.label }}{% endif %}
+          </button>
+        </form>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if os.aprovacoes.all %}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header fw-semibold">Respostas do cliente</div>
+      <ul class="list-group list-group-flush small">
+        {% for a in os.aprovacoes.all %}
+        <li class="list-group-item"><strong>{{ a.get_decisao_display }}</strong> por {{ a.nome }} ({{ a.get_canal_display }})
+          · {{ a.valor|brl }}<br><span class="text-muted">{{ a.em|date:"d/m/Y H:i" }}</span></li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <div class="card shadow-sm">
+      <div class="card-header fw-semibold">Histórico</div>
+      <ul class="list-group list-group-flush small">
+        <li class="list-group-item">Aberta · <span class="text-muted">{{ os.aberta_em|date:"d/m/Y H:i" }}</span></li>
+        {% for h in os.historico.all %}
+        <li class="list-group-item">{{ h.de }} → <strong>{{ h.para }}</strong>{% if h.motivo %} · {{ h.motivo }}{% endif %}
+          · <span class="text-muted">{{ h.em|date:"d/m/Y H:i" }}</span></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

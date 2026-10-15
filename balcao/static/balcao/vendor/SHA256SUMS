@@ -1,0 +1,5 @@
+# Bootstrap 5.3.3 e HTMX 2.0.4 (jsDelivr/npm). Removida só a linha sourceMappingURL
+# (os .map não são distribuídos e o collectstatic com manifest exige que existam).
+26db49828d6701fcfce37a96da6ec3f0ed481abae49c8c9969a575b064413cad  bootstrap.min.css
+073254afbfc06331b8b548b7fc0532b4ffe2cfdd588368dcc338e7abd50810e1  bootstrap.bundle.min.js
+e209dda5c8235479f3166defc7750e1dbcd5a5c1808b7792fc2e6733768fb447  htmx.min.js

@@ -1,10 +1,10 @@
 from decimal import Decimal
 
 from django.contrib.auth.models import User
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
-from oficina.formatacao import brl
+from oficina.formatacao import brl, telefone
 from oficina.models import Cliente, ItemOS, OrdemServico, Veiculo
 
 S = OrdemServico.Status
@@ -16,7 +16,15 @@ class FormatacaoTests(TestCase):
         self.assertEqual(brl(Decimal("0.5")), "R$ 0,50")
         self.assertEqual(brl(Decimal("1234567.891")), "R$ 1.234.567,89")
 
+    def test_telefone(self):
+        self.assertEqual(telefone("11943796788"), "(11) 94379-6788")
+        self.assertEqual(telefone("1155551234"), "(11) 5555-1234")
+        self.assertEqual(telefone(""), "")
+        self.assertEqual(telefone("123"), "123")
 
+
+# Hash de senha rápido só nos testes (PBKDF2 é lento de propósito e dominava o tempo da suíte).
+@override_settings(PASSWORD_HASHERS=["django.contrib.auth.hashers.MD5PasswordHasher"])
 class AdminTests(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -45,6 +53,17 @@ class AdminTests(TestCase):
             for sufixo in ("changelist", "add"):
                 with self.subTest(pagina=f"{nome}_{sufixo}"):
                     self.assertEqual(self.client.get(reverse(f"admin:{nome}_{sufixo}")).status_code, 200)
+
+    def test_cadastro_de_cliente_com_mascara(self):
+        resp = self.client.post(reverse("admin:oficina_cliente_add"), {
+            "nome": "Maria", "telefone": "(11) 5555-1234", "documento": "529.982.247-25", "observacao": "",
+            "veiculos-TOTAL_FORMS": 1, "veiculos-INITIAL_FORMS": 0,
+            "veiculos-0-placa": "xyz-9876", "veiculos-0-marca": "", "veiculos-0-modelo": "", "veiculos-0-ano": "",
+        })
+        self.assertEqual(resp.status_code, 302)
+        maria = Cliente.objects.get(nome="Maria")
+        self.assertEqual((maria.telefone, maria.documento, maria.veiculos.get().placa),
+                         ("1155551234", "52998224725", "XYZ9876"))
 
     def test_busca_os_por_placa(self):
         OrdemServico.objects.create(cliente=self.cliente, veiculo=self.veiculo, relato_cliente="x")

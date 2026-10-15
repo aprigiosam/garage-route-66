@@ -29,11 +29,12 @@ Repo antigo (`~/Projetos/GarageRoute66`):
 - `uv add <pacote>` / `uv remove <pacote>`: altera as dependências e o lock.
 - Configuração vem do ambiente (12-factor): copie `.env.example` para `.env` (fora do git). Sem `DJANGO_SECRET_KEY` a app não sobe.
 - `uv run --env-file .env python manage.py runserver`: servidor de desenvolvimento.
-- `uv run --env-file .env python manage.py test`: testes.
+- `uv run --env-file .env python manage.py test`: testes de todas as apps.
 - `uv run --env-file .env python manage.py makemigrations` / `migrate`: migrações.
 - **Container (produção):** `docker compose up -d --build`, com configuração em `.env.prod` (fora do git) e dados no volume `dados` (`/data/db.sqlite3`).
   App em `127.0.0.1:8000` (só loopback), healthcheck em `/saude/`.
   Primeiro acesso: `docker compose exec app python manage.py createsuperuser`.
+- Camadas (ADR 0002): `oficina/` é o domínio e não importa nada de `balcao/`; `balcao/` é a interface e só chama métodos do domínio. Regra nova vai para `oficina/models.py`, com teste.
 - Pendente para o deploy: os 4 avisos de HTTPS do `check --deploy` (cookies secure, HSTS, SSL redirect).
 
 ## Princípios de engenharia
