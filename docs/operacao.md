@@ -36,6 +36,9 @@ docker compose exec app python manage.py changepassword <user>  # trocar senha
 docker compose exec app python manage.py shell                  # console Python com os models
 ```
 
+Comandos que pedem senha (`createsuperuser`, `changepassword`) precisam de um terminal interativo (TTY).
+Rode-os num terminal normal, não pelo prompt `!` do Claude Code.
+
 **Atualizar com segurança:**
 1. `git pull`
 2. Testes: `uv run --env-file .env python manage.py test oficina`
