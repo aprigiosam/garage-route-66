@@ -1,0 +1,26 @@
+# Ambiente Python
+.venv/
+__pycache__/
+*.pyc
+
+# Banco e dados reais de clientes (nunca no Git)
+*.sqlite3
+*.sqlite3-*
+backups/
+
+# Segredos
+.env
+.env.*
+!.env.example
+
+# Django
+/staticfiles/
+/media/
+
+# Editor e sistema
+.vscode/
+.idea/
+.DS_Store
+
+# Arquivos extraídos do repo antigo (commit e771b139); apagar após portar
+legado/
