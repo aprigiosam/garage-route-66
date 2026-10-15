@@ -14,3 +14,6 @@ Conceitos aprendidos ao longo do projeto: o que é, onde apareceu aqui e a docum
 | 2026-10-15 | **`Decimal` arredonda como banco por padrão** (meio para o par): 139,965 → 139,96. Valor cobrado usa `ROUND_HALF_UP` | `ItemOS.valor_total` | https://docs.python.org/3/library/decimal.html#rounding-modes |
 | 2026-10-15 | **`localize=True`** nos campos decimais para aceitar "154,00" | `oficina/admin.py` | https://docs.djangoproject.com/en/5.2/topics/i18n/formatting/ |
 | 2026-10-15 | **`setUpTestData`**: cria dados uma vez por classe de teste (suíte de 4,7s para 1,3s) | `oficina/tests/test_admin.py` | https://docs.djangoproject.com/en/5.2/topics/testing/tools/#django.test.TestCase.setUpTestData |
+| 2026-10-15 | **Multi-stage build**: o estágio de build tem uv e cache; o runtime leva só o `.venv` e o código (249 MB, roda com ~93 MB de RAM) | `Dockerfile` | https://docs.astral.sh/uv/guides/integration/docker/ |
+| 2026-10-15 | **SQLite em WAL + `transaction_mode=IMMEDIATE`**: vários workers do gunicorn sem "database is locked" | `config/settings.py` | https://docs.djangoproject.com/en/5.2/ref/databases/#sqlite-transaction-behavior |
+| 2026-10-15 | **Manifest de estáticos só no container**: o hash no nome permite cache imutável; em dev/teste não existe o collectstatic | `STORAGES` em `config/settings.py` | https://whitenoise.readthedocs.io/en/stable/django.html |

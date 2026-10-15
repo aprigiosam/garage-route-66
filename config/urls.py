@@ -17,6 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from oficina.views import saude
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('saude/', saude),
 ]

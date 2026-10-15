@@ -31,6 +31,9 @@ Repo antigo (`~/Projetos/GarageRoute66`):
 - `uv run --env-file .env python manage.py runserver`: servidor de desenvolvimento.
 - `uv run --env-file .env python manage.py test`: testes.
 - `uv run --env-file .env python manage.py makemigrations` / `migrate`: migrações.
+- **Container (produção):** `docker compose up -d --build`, com configuração em `.env.prod` (fora do git) e dados no volume `dados` (`/data/db.sqlite3`).
+  App em `127.0.0.1:8000` (só loopback), healthcheck em `/saude/`.
+  Primeiro acesso: `docker compose exec app python manage.py createsuperuser`.
 - Pendente para o deploy: os 4 avisos de HTTPS do `check --deploy` (cookies secure, HSTS, SSL redirect).
 
 ## Princípios de engenharia

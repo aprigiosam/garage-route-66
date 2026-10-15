@@ -1,0 +1,21 @@
+services:
+  app:
+    build: .
+    image: garage-route-66:latest
+    env_file: .env.prod
+    ports:
+      # Só no loopback: nem a rede local alcança o app. O acesso externo será via Tailscale.
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - dados:/data
+    restart: unless-stopped
+    # Hardening: filesystem somente leitura (exceto /data e /tmp), sem capabilities, memória limitada.
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 256m
+
+volumes:
+  dados:

@@ -29,6 +29,8 @@ SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 DEBUG = os.environ.get("DJANGO_DEBUG") == "1"
 
 ALLOWED_HOSTS = [h for h in os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(",") if h]
+# Origens HTTPS autorizadas a enviar formulários (ex.: https://servidor.tailnet.ts.net).
+CSRF_TRUSTED_ORIGINS = [o for o in os.environ.get("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",") if o]
 
 
 # Application definition
@@ -45,6 +47,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # Serve os arquivos estáticos direto do app (sem nginx).
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -80,6 +84,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.environ.get("DJANGO_DB_PATH", BASE_DIR / "db.sqlite3"),
+        'OPTIONS': {
+            # WAL: leituras não bloqueiam escritas. IMMEDIATE: a transação pega o lock de escrita
+            # no início, evitando "database is locked" com mais de um worker do gunicorn.
+            'init_command': 'PRAGMA journal_mode=WAL; PRAGMA synchronous=NORMAL; PRAGMA busy_timeout=5000;',
+            'transaction_mode': 'IMMEDIATE',
+        },
     }
 }
 
@@ -119,6 +129,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # destino do collectstatic (no build da imagem)
+# Na imagem Docker (DJANGO_STATIC_MANIFEST=1, após o collectstatic): arquivos com hash no nome
+# + compressão, para cache longo no navegador sem servir versão velha. Em dev e testes: storage simples.
+STORAGES = {
+    'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
+    'staticfiles': {'BACKEND': (
+        'whitenoise.storage.CompressedManifestStaticFilesStorage'
+        if os.environ.get("DJANGO_STATIC_MANIFEST") == "1"
+        else 'django.contrib.staticfiles.storage.StaticFilesStorage'
+    )},
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

@@ -1,0 +1,12 @@
+.git
+.venv
+.claude
+docs
+legado
+staticfiles
+**/__pycache__
+*.sqlite3*
+.env
+.env.*
+Dockerfile
+compose.yaml
