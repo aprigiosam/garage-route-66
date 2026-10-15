@@ -27,9 +27,11 @@ Repo antigo (`~/Projetos/GarageRoute66`):
 - **Python 3.12 + Django 5.2 LTS**: os dois têm suporte até 2028, numa janela só de manutenção.
 - Dependências e Python são gerenciados pelo **uv**: `pyproject.toml` + `uv.lock` (com hashes) e ambiente em `.venv/`.
 - `uv add <pacote>` / `uv remove <pacote>`: altera as dependências e o lock.
-- `uv run python manage.py runserver`: servidor de desenvolvimento.
-- `uv run python manage.py test`: testes.
-- `uv run python manage.py makemigrations && uv run python manage.py migrate`: migrações.
+- Configuração vem do ambiente (12-factor): copie `.env.example` para `.env` (fora do git). Sem `DJANGO_SECRET_KEY` a app não sobe.
+- `uv run --env-file .env python manage.py runserver`: servidor de desenvolvimento.
+- `uv run --env-file .env python manage.py test`: testes.
+- `uv run --env-file .env python manage.py makemigrations` / `migrate`: migrações.
+- Pendente para o deploy: os 4 avisos de HTTPS do `check --deploy` (cookies secure, HSTS, SSL redirect).
 
 ## Princípios de engenharia
 
