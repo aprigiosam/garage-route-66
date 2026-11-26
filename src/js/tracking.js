@@ -29,12 +29,13 @@ function bumpLocalCounter(eventName, service) {
     }
 }
 
-/** Dispara evento em dataLayer, gtag (GA4), Clarity e contador local. */
+/** Dispara evento em dataLayer, gtag (GA4), Clarity, Vercel Analytics e contador local. */
 export function trackEvent(eventName, params = {}) {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: eventName, ...params });
     if (typeof window.gtag === 'function') window.gtag('event', eventName, params);
     if (typeof window.clarity === 'function') window.clarity('event', eventName);
+    if (typeof window.va === 'function') window.va('event', { name: eventName, ...params }); // Vercel Analytics
     bumpLocalCounter(eventName, params.service_name);
 }
 

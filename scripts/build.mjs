@@ -5,7 +5,7 @@
  *  Substitui {{caminho.no.json}}, gera JSON-LD (AutoRepair), injeta config e analytics.
  *  Copia src/css, src/js e public/ para dist/.
  *
- * Variáveis de ambiente opcionais: GA4_ID (ex: G-XXXXXXX), CLARITY_ID.
+ * Variáveis de ambiente opcionais: GA4_ID (ex: G-XXXXXXX), CLARITY_ID, VERCEL_ANALYTICS=1 (automático na Vercel).
  */
 import { readFileSync, writeFileSync, mkdirSync, cpSync, rmSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
@@ -70,6 +70,14 @@ function analytics() {
     const out = [];
     const ga = process.env.GA4_ID;
     const clarity = process.env.CLARITY_ID;
+    // Vercel Web Analytics (site estático): ativo no build da Vercel (VERCEL=1) ou com VERCEL_ANALYTICS=1.
+    // Requer ativar "Analytics" no painel do projeto na Vercel.
+    if (process.env.VERCEL === '1' || process.env.VERCEL_ANALYTICS === '1') {
+        out.push(
+            `<script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script>`,
+            `<script defer src="/_vercel/insights/script.js"></script>`
+        );
+    }
     if (ga) {
         out.push(
             `<script async src="https://www.googletagmanager.com/gtag/js?id=${esc(ga)}"></script>`,

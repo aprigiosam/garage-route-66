@@ -29,6 +29,7 @@ Cloudflare Pages não usa registro A para domínio raiz fora do Cloudflare DNS; 
 
 - **GA4:** crie a propriedade, copie o ID `G-XXXXXXX` para `GA4_ID` e rode o deploy. Marque como conversão o evento `whatsapp_click` (Admin → Eventos). Relatório mensal: Relatórios → Engajamento → Eventos, filtrando por `service_name`.
 - **Microsoft Clarity:** gratuito, mapa de calor e gravações; defina `CLARITY_ID`.
+- **Vercel Web Analytics:** não use `npm i @vercel/analytics` (esse pacote é para Next.js). Aqui o build injeta o script `/_vercel/insights/script.js` sozinho quando roda na Vercel. Falta só ativar **Analytics** no painel do projeto (aba Analytics → Enable) e fazer um novo deploy. Os eventos do site também vão para a Vercel via `va('event', ...)`; eventos personalizados podem depender do plano (confira na Vercel). Só funciona no domínio hospedado lá, não no `localhost`.
 - Sem as variáveis, nenhum script de analytics é carregado (o build deixa um comentário no HTML).
 - Eventos enviados: `whatsapp_click`, `telefone_click`, `rota_maps_click`, `waze_click`, `instagram_click`.
 - Aviso: o site não tem banner de cookies/LGPD. Confirme a necessidade com o dono antes de ativar analytics em produção.
