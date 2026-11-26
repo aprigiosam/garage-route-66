@@ -457,6 +457,58 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // 6b. Triagem com IA (sugere o serviço a partir do relato; falha sem quebrar o formulário)
+    const aiBtn = document.getElementById('ai-suggest-btn');
+    const aiLabel = document.getElementById('ai-suggest-label');
+    const aiResult = document.getElementById('ai-result');
+    const AI_STYLES = {
+        normal: 'border-garage-border bg-garage-dark text-slate-200',
+        atencao: 'border-amber-500/40 bg-amber-500/10 text-amber-100',
+        urgente: 'border-red-500/50 bg-red-500/10 text-red-100',
+    };
+
+    function hideAiResult() {
+        if (aiResult) {
+            aiResult.classList.add('hidden');
+            aiResult.textContent = '';
+        }
+    }
+
+    if (aiBtn && CLIENT.ai && CLIENT.ai.enabled) {
+        aiBtn.classList.remove('hidden');
+        aiBtn.addEventListener('click', async () => {
+            const symptom = problemDescInput.value.trim();
+            if (symptom.length < 5) {
+                showToast('Descreva o que está acontecendo (ao menos algumas palavras).', 'error');
+                problemDescInput.focus();
+                return;
+            }
+            aiBtn.disabled = true;
+            aiLabel.textContent = 'Analisando...';
+            try {
+                const res = await fetch(CLIENT.ai.endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ symptom, vehicle: carModelInput.value.trim() }),
+                });
+                if (!res.ok) throw new Error(`status ${res.status}`);
+                const data = await res.json();
+                const option = Array.from(serviceSelect.options).find((o) => o.value === data.service);
+                if (option) serviceSelect.value = data.service;
+                aiResult.className = `mt-2 rounded-xl border px-4 py-3 text-sm leading-relaxed ${AI_STYLES[data.urgency] || AI_STYLES.normal}`;
+                aiResult.textContent = `${data.message} (Sugestão automática: ${data.service}. O mecânico confirma na avaliação.)`;
+                trackEvent('ia_triagem', { service_name: data.service, urgency: data.urgency });
+            } catch (_err) {
+                hideAiResult();
+                showToast('A sugestão automática está indisponível agora. Escolha o serviço manualmente.', 'error');
+            } finally {
+                aiBtn.disabled = false;
+                aiLabel.textContent = 'Não sei o serviço: sugerir com IA';
+            }
+        });
+        if (quoteForm) quoteForm.addEventListener('reset', hideAiResult);
+    }
+
     // 7. Copiar endereço
     const copyAddressBtn = document.getElementById('copy-address-btn');
     if (copyAddressBtn) {

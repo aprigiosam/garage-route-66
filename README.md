@@ -23,6 +23,6 @@ Dados do cliente: `src/data/client-config.json`. Fotos: `public/assets/fotos/`.
 
 ## Docs do time
 
-[arquitetura-cto](docs/arquitetura-cto.md) · [ux-spec](docs/ux-spec.md) · [infra-deploy](docs/infra-deploy.md) · [dns-e-analytics](docs/dns-e-analytics.md)
+[arquitetura-cto](docs/arquitetura-cto.md) · [ux-spec](docs/ux-spec.md) · [infra-deploy](docs/infra-deploy.md) · [dns-e-analytics](docs/dns-e-analytics.md) · [ia-triagem](docs/ia-triagem.md)
 
 > Alguns caminhos nos docs antigos (`assets/...`, `index.html` na raiz) refletem a estrutura anterior; vale a `ARCHITECTURE.md`.

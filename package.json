@@ -6,9 +6,10 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "dev": "node scripts/build.mjs && python3 -m http.server 8080 -d dist",
+    "dev": "node scripts/build.mjs && node scripts/dev.mjs 8080",
     "deploy:preview": "bash scripts/deploy.sh preview",
-    "deploy:prod": "bash scripts/deploy.sh prod"
+    "deploy:prod": "bash scripts/deploy.sh prod",
+    "test": "node scripts/test-triage.mjs"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.19"
