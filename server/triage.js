@@ -85,7 +85,7 @@ export async function handleTriage(request, env, config) {
 
     const names = config.services.map((s) => s.name);
     const services = [...names, OTHER_SERVICE];
-    const model = env.GEMINI_MODEL || 'gemini-2.5-flash';
+    const model = env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
     const generationConfig = {
         temperature: 0.2,
         maxOutputTokens: 800,
@@ -124,6 +124,7 @@ export async function handleTriage(request, env, config) {
         });
         if (!res.ok) {
             console.error('triage upstream status', res.status); // sem conteúdo do cliente nos logs
+            if (env.DEBUG_TRIAGE === '1') console.error('triage upstream body:', (await res.text()).slice(0, 600));
             return json({ error: 'upstream_error' }, 502);
         }
         const data = await res.json();

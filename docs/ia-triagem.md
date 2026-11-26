@@ -46,7 +46,7 @@ Pontos de atenção na Vercel:
 
 ## Cuidados
 
-- **Modelo:** o padrão é `gemini-2.5-flash` (variável `GEMINI_MODEL`). Confira no Google AI Studio se o nome ainda é válido e quais são os limites gratuitos atuais.
+- **Modelo:** o padrão é `gemini-3.5-flash-lite` (variável `GEMINI_MODEL`). Confira no Google AI Studio se o nome ainda é válido e quais são os limites gratuitos atuais.
 - **Privacidade (LGPD):** o relato do cliente é enviado ao Google. Verifique os termos do plano gratuito sobre uso dos dados e inclua um aviso de privacidade no site antes de publicar.
 - **Custo:** defina um teto de gasto se ativar cobrança. O limite por IP reduz abuso, mas não substitui isso.
 - **Chave exposta:** se a chave aparecer em um commit, print ou conversa, revogue e crie outra no AI Studio.
