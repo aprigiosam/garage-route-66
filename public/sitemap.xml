@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  sitemap.xml — Garage Route 66 (Parelheiros - SP)
+
+  IMPORTANTE:
+  Substitua "https://garageroute66.com.br/" abaixo pela URL definitiva
+  em produção caso registre outro domínio, e atualize <lastmod> sempre
+  que fizer alterações relevantes no site.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://garageroute66.com.br/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>

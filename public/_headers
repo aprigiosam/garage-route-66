@@ -1,0 +1,53 @@
+# ==============================================================================
+# _headers — Configuração de Segurança e Cache (Cloudflare Pages / Netlify)
+# Projeto: Garage Route 66 (Oficina Mecânica em Parelheiros - SP)
+# ==============================================================================
+
+/*
+  # Força HTTPS após a primeira visita (1 ano)
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  # Evita detecção incorreta de MIME-type pelo navegador
+  X-Content-Type-Options: nosniff
+  # Protege contra clickjacking (não bloqueia iframes carregados por este site)
+  X-Frame-Options: SAMEORIGIN
+  # Envia apenas a origem para destinos externos HTTPS (compatível com Google Maps)
+  Referrer-Policy: strict-origin-when-cross-origin
+  # Desativa recursos sensíveis do navegador que o site não utiliza
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  # CSP equilibrada: protege o site sem bloquear Tailwind CDN, scripts inline,
+  # Google Fonts, Google Maps iframe ou imagens externas (Unsplash / Placehold)
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.clarity.ms https://scripts.clarity.ms; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://images.unsplash.com https://placehold.co https:; frame-src 'self' https://www.google.com https://maps.google.com; connect-src 'self' https:; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://wa.me; upgrade-insecure-requests
+  # HTML sempre revalidado para que atualizações apareçam imediatamente após o deploy
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Arquivos de SEO com cache curto (1 hora)
+/robots.txt
+  Cache-Control: public, max-age=3600
+
+/sitemap.xml
+  Cache-Control: public, max-age=3600
+
+# Assets locais (caso sejam adicionados em futuras evoluções)
+# Cache de 7 dias com revalidação em segundo plano (seguro para arquivos sem hash no nome)
+/assets/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+/images/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+/img/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+/css/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+/js/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+# Fontes locais (imutáveis por 1 ano)
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Evita indexação da documentação interna caso a pasta /docs seja publicada junto
+/docs/*
+  X-Robots-Tag: noindex, nofollow

@@ -1,0 +1,14 @@
+# ==============================================================================
+# robots.txt — Garage Route 66 (Parelheiros - SP)
+#
+# IMPORTANTE: Antes ou logo após apontar o domínio definitivo, substitua
+# "https://garageroute66.com.br" abaixo pelo domínio oficial do site,
+# caso escolha um endereço diferente.
+# ==============================================================================
+
+User-agent: *
+Allow: /
+Disallow: /docs/
+
+# Troque o domínio abaixo pelo domínio final em produção, se necessário:
+Sitemap: https://garageroute66.com.br/sitemap.xml

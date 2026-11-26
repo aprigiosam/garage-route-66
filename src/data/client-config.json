@@ -1,0 +1,82 @@
+{
+  "site": {
+    "name": "Garage Route 66",
+    "shortName": "Route 66",
+    "url": "https://garageroute66.com.br/",
+    "title": "Garage Route 66 | Oficina Mecânica de Confiança em Parelheiros - SP",
+    "description": "Oficina mecânica automotiva em Parelheiros, São Paulo. Nota 5,0 no Google. Revisão preventiva, freios, suspensão, scanner e troca de óleo. Agende pelo WhatsApp.",
+    "ogImage": "https://garageroute66.com.br/assets/img/og-cover.jpg",
+    "trackingTag": "[Site Oficial]"
+  },
+  "business": {
+    "schemaType": "AutoRepair",
+    "priceRange": "$$",
+    "areaServed": [
+      "Parelheiros",
+      "Vargem Grande",
+      "Colônia",
+      "Marsilac",
+      "Zona Sul de São Paulo"
+    ]
+  },
+  "contact": {
+    "whatsappNumber": "5511943796788",
+    "phoneE164": "+5511943796788",
+    "phoneDisplay": "(11) 94379-6788",
+    "instagram": "https://www.instagram.com/garageroute66_/"
+  },
+  "address": {
+    "street": "Rua Bem Te Vi, 32",
+    "neighborhood": "Parelheiros",
+    "city": "São Paulo",
+    "state": "SP",
+    "postalCode": "04896-310",
+    "country": "BR",
+    "full": "Rua Bem Te Vi, 32 - Parelheiros, São Paulo - SP, 04896-310",
+    "mapsQuery": "Rua+Bem+Te+Vi,+32+-+Parelheiros,+Sao+Paulo+-+SP,+04896-310"
+  },
+  "hours": {
+    "timezone": "America/Sao_Paulo",
+    "weekdayOpen": 8,
+    "weekdayClose": 18,
+    "saturdayOpen": 8,
+    "saturdayClose": 12
+  },
+  "rating": {
+    "value": "5.0",
+    "reviewCount": 43,
+    "reviewsUrl": "https://www.google.com/maps/search/?api=1&query=Garage+Route+66+Rua+Bem+Te+Vi+32+Parelheiros+Sao+Paulo"
+  },
+  "services": [
+    {
+      "name": "Revisão Preventiva Completa",
+      "description": "Check-up completo de mais de 40 itens essenciais, correias, velas, fluidos e segurança para você rodar ou viajar sem imprevistos.",
+      "iconSvg": "<path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4\"/>"
+    },
+    {
+      "name": "Diagnóstico Eletrônico (Scanner)",
+      "description": "Leitura computadorizada avançada para identificar falhas no painel, luz da injeção acesa, sensores, ABS e sistemas eletrônicos.",
+      "iconSvg": "<path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z\"/>"
+    },
+    {
+      "name": "Sistema de Freios e Suspensão",
+      "description": "Troca de pastilhas, discos, fluido de freio, amortecedores, molas, pivôs e bandejas. Mais estabilidade e segurança nas ruas do bairro.",
+      "iconSvg": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/><path stroke-linecap=\"round\" d=\"M12 3v3m0 12v3M3 12h3m12 0h3\"/>"
+    },
+    {
+      "name": "Troca de Óleo e Filtros",
+      "description": "Lubrificantes sintéticos e semissintéticos homologados pela montadora, além de filtros de óleo, ar, combustível e cabine.",
+      "iconSvg": "<path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z\"/>"
+    },
+    {
+      "name": "Motor e Injeção Eletrônica",
+      "description": "Limpeza de bicos injetores, corpo de borboleta, troca de correia dentada, cabeçote e manutenção corretiva para máxima economia e potência.",
+      "iconSvg": "<path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z\"/><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M15 12a3 3 0 11-6 0 3 3 0 016 0z\"/>"
+    },
+    {
+      "name": "Arrefecimento e Embreagem",
+      "description": "Limpeza completa do radiador, válvula termostática, bomba d'água para evitar superaquecimento e troca de kit de embreagem.",
+      "iconSvg": "<path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M13 10V3L4 14h7v7l9-11h-7z\"/>"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+# ==============================================================================
+# .gitignore — Garage Route 66 (Site Estático)
+# ==============================================================================
+
+# Sistema Operacional
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*~
+
+# Editores e IDEs
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*.swn
+*.sublime-workspace
+*.sublime-project
+
+# Node.js e Gerenciadores de Pacotes (caso adotem build/CLI futuramente)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm
+.pnpm-store/
+
+# Diretórios de Build, Cache e Ferramentas de Deploy
+dist/
+build/
+out/
+.cache/
+.parcel-cache/
+.vercel/
+.netlify/
+.wrangler/
+
+# Variáveis de Ambiente e Segredos
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs e Arquivos Temporários
+*.log
+logs/
+tmp/
+temp/
+node_modules/
+dist/
+.env
