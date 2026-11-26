@@ -8,7 +8,7 @@ No modal de pré-orçamento, o botão **"Não sei o serviço: sugerir com IA"** 
 Navegador  ->  POST /api/triage  ->  Function (guarda a chave)  ->  Gemini
 ```
 
-- Lógica em [server/triage.js](../server/triage.js). Em produção roda como Cloudflare Pages Function ([functions/api/triage.js](../functions/api/triage.js)). Localmente roda em `scripts/dev.mjs`.
+- Lógica em [server/triage.js](../server/triage.js). Em produção roda como Vercel Function ([api/triage.js](../api/triage.js)) ou Cloudflare Pages Function ([functions/api/triage.js](../functions/api/triage.js)). Localmente roda em `scripts/dev.mjs`.
 - A resposta é limitada por esquema: o serviço só pode ser um dos de `client-config.json` (ou "Outro serviço"), e o servidor valida de novo.
 - O prompt proíbe preço, prazo e diagnóstico definitivo, e marca risco (freio, superaquecimento, fumaça) como **urgente**.
 - Proteções: só aceita a origem do site, relato entre 5 e 400 caracteres, corpo máximo de 2 KB, 8 requisições por IP a cada 10 min (por instância da Function; é uma trava simples, não um limite exato), timeout de 9 s. Os logs não guardam o texto do cliente.
@@ -28,7 +28,21 @@ npx wrangler pages secret put GEMINI_API_KEY --project-name garageroute66-demo
 
 Depois, faça o deploy normalmente (`npm run deploy:preview` com `DEPLOY_PROVIDER=cloudflare`). Adicione a URL do preview em `ALLOWED_ORIGINS` se for testar nela (ex.: `https://garageroute66-demo.pages.dev`).
 
-> Netlify e Vercel **não** executam essa Function como está. Nesses provedores o botão mostra a mensagem de indisponível. Use Cloudflare Pages, ou desligue a IA no config.
+## Ativar na Vercel
+
+O adaptador é [api/triage.js](../api/triage.js). Na Vercel:
+
+1. Projeto → **Settings → Environment Variables**: crie `GEMINI_API_KEY` (marque Production e Preview; deixe como sensível). Opcional: `GEMINI_MODEL`.
+2. Se usar um domínio próprio (ex.: `garageroute66.com.br`), ele já é aceito porque está em `site.url`. Outros domínios vão em `ALLOWED_ORIGINS`. Os domínios `.vercel.app` do projeto são liberados automaticamente.
+3. Faça um novo deploy (variáveis só valem para deploys feitos depois de criadas).
+4. Teste no link de produção/preview: no modal, escreva um sintoma e clique em "sugerir com IA".
+
+Pontos de atenção na Vercel:
+- O limite de requisições por IP é por instância da função, então é uma trava aproximada. Para controle forte, use o Vercel Firewall (Rate Limiting) na rota `/api/triage`.
+- A função usa o Node.js da Vercel. Se o deploy reclamar do `import ... with { type: 'json' }`, selecione Node 22 ou superior em Settings → General.
+- O adaptador foi testado só localmente (origem, método, chave ausente), **não em um deploy real**.
+
+> Netlify **não** executa essas funções como estão. Lá o botão mostra "indisponível".
 
 ## Cuidados
 
